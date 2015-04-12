@@ -28,63 +28,62 @@ namespace jla.SpotifyVSExtension.SpotifyAPI
             _oauth = GetOAuth();
 
             _webClient = new WebClient();
-
             _webClient.Headers.Add("Origin", "https://embed.spotify.com");
             _webClient.Headers.Add("Referer", "https://embed.spotify.com/?uri=spotify:track:5Zp4SWOpbuOdnsxLqwgutt");
         }
 
         public CFID GenerateCfid()
         {
-            var a = SendRequest("simplecsrf/token.json");
-            var d = (List<CFID>)JsonConvert.DeserializeObject(a, typeof(List<CFID>));
-            _cfid = d[0].token;
-            return d[0];
+            var response = SendRequest("simplecsrf/token.json");
+            var cfid = ((List<CFID>)JsonConvert.DeserializeObject(response, typeof(List<CFID>)))[0];
+            _cfid = cfid.token;
+            return cfid;
         }
 
         public Status Play(string uri)
         {
-            var a = SendRequest("remote/play.json?uri=" + uri, true, true, -1);
-            var d = (List<Status>)JsonConvert.DeserializeObject(a, typeof(List<Status>));
-            return d[0];
+            var response = SendRequest("remote/play.json?uri=" + uri, true, true, -1);
+            var status = ((List<Status>)JsonConvert.DeserializeObject(response, typeof(List<Status>)))[0];
+            return status;
         }
 
         public Status Resume()
         {
-            var a = SendRequest("remote/pause.json?pause=false", true, true, -1);
-            var d = (List<Status>)JsonConvert.DeserializeObject(a, typeof(List<Status>));
-            return d[0];
+            var response = SendRequest("remote/pause.json?pause=false", true, true, -1);
+            var status = ((List<Status>)JsonConvert.DeserializeObject(response, typeof(List<Status>)))[0];
+            return status;
         }
 
         public Status Pause()
         {
-            var a = SendRequest("remote/pause.json?pause=true", true, true, -1);
-            var d = (List<Status>)JsonConvert.DeserializeObject(a, typeof(List<Status>));
-            return d[0];
+            var response = SendRequest("remote/pause.json?pause=true", true, true, -1);
+            var status = ((List<Status>)JsonConvert.DeserializeObject(response, typeof(List<Status>)))[0];
+            return status;
         }
 
         public Status GetCurrentStatus(int wait = -1)
         {
-            var a = SendRequest("remote/status.json", true, true, wait);
-            var d = (List<Status>)JsonConvert.DeserializeObject(a, typeof(List<Status>));
-            return d[0];
+            var response = SendRequest("remote/status.json", true, true, wait);
+            var status = ((List<Status>)JsonConvert.DeserializeObject(response, typeof(List<Status>)))[0];
+            return status;
         }
 
         public ClientVersion GetClientVersion()
         {
-            var a = SendRequest("service/version.json?service=remote");
-            var d = (List<ClientVersion>)JsonConvert.DeserializeObject(a, typeof(List<ClientVersion>));
-            return d[0];
+            var response = SendRequest("service/version.json?service=remote");
+            var clientVersion = ((List<ClientVersion>)JsonConvert.DeserializeObject(response, typeof(List<ClientVersion>)))[0];
+            return clientVersion;
         }
 
         public string GetAlbumCover(string uri)
         {
             try
             {
-                var raw = new WebClient().DownloadString("http://open.spotify.com/album/" + uri.Split(new[] { ":" }, StringSplitOptions.None)[2]);
+                var response = new WebClient().DownloadString("http://open.spotify.com/album/" + uri.Split(new[] { ":" }, StringSplitOptions.None)[2]);
                 const string metaPropertyOgImage = "<meta property=\"og:image\" content=\"";
-                var startIndex = raw.IndexOf(metaPropertyOgImage) + metaPropertyOgImage.Length;
-                var endIndex = raw.IndexOf("\"", startIndex);
-                var url = raw.Substring(startIndex, endIndex - startIndex);
+                var startIndex = response.IndexOf(metaPropertyOgImage) + metaPropertyOgImage.Length;
+                var endIndex = response.IndexOf("\"", startIndex);
+                var url = response.Substring(startIndex, endIndex - startIndex);
                 return url;
             }
             catch (Exception e)
@@ -129,11 +128,11 @@ namespace jla.SpotifyVSExtension.SpotifyAPI
             }
 
             var a = "http://" + Host + ":4380/" + request + parameters;
-            string derp;
+            string response;
             try
             {
-                derp = _webClient.DownloadString(a);
-                derp = "[ " + derp + " ]";
+                response = _webClient.DownloadString(a);
+                response = "[ " + response + " ]";
             }
             catch (Exception z)
             {
@@ -150,17 +149,16 @@ namespace jla.SpotifyVSExtension.SpotifyAPI
 
                     return SendRequest(request, oauth, cfid);
                 }
-                //spotifywebhelper is running but we still can't connect, wtf?!
                 throw new Exception("Unable to connect to SpotifyWebHelper", z);
             }
-            return derp;
+            return response;
         }
 
         private string GetOAuth()
         {
-            var raw = new WebClient().DownloadString("https://open.spotify.com/token");
-            var d = (Token)JsonConvert.DeserializeObject(raw, typeof(Token));
-            return d.t;
+            var response = new WebClient().DownloadString("https://open.spotify.com/token");
+            var token = ((Token)JsonConvert.DeserializeObject(response, typeof(Token))).t;
+            return token;
         }
     }
 }
