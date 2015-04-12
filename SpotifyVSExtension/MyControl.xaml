@@ -8,16 +8,16 @@
              mc:Ignorable="d"
              d:DesignHeight="170" d:DesignWidth="290"
              Name="MyToolWindow">
-    <Grid Margin="5">
+    <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="10"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="50"/>
                 <ColumnDefinition Width="10"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
@@ -26,19 +26,19 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             
-            <TextBlock x:Name="TrackName" Grid.Row="0" Grid.Column="2" FontSize="20"/>
-            <TextBlock x:Name="ArtistName" Grid.Row="1" Grid.Column="2" FontSize="20"/>
-            <Image x:Name="AlbumCover" Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Width="100" Height="100"/>
+            <TextBlock x:Name="TrackName" Grid.Row="0" Grid.Column="2" FontSize="13" VerticalAlignment="Center"/>
+            <TextBlock x:Name="ArtistName" Grid.Row="1" Grid.Column="2" FontSize="13" VerticalAlignment="Center"/>
+            <Image x:Name="AlbumCover" Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Width="50" Height="50"/>
         </Grid>
         
         <StackPanel Orientation="Horizontal" Grid.Row="2">
-            <Button Content="&#xE100;" FontFamily="Segoe UI Symbol" FontSize="20" Click="PreviousTrackClick" Width="35" Height="35" Name="PreviousButton" Margin="0 0 10 0"/>
-            <Button Content="&#xE102;" FontFamily="Segoe UI Symbol" FontSize="20" Click="PlayPauseClick" Width="35" Height="35" Name="PlayPauseButton" Margin="0 0 10 0"/>
-            <Button Content="&#xE101;" FontFamily="Segoe UI Symbol" FontSize="20" Click="NextTrackClick" Width="35" Height="35" Name="NextButton" Margin="0 0 30 0"/>
+            <Button Content="&#xE100;" FontFamily="Segoe UI Symbol" FontSize="16" Click="PreviousTrackClick" Width="28" Height="28" Name="PreviousButton" Margin="0 0 10 0"/>
+            <Button Content="&#xE102;" FontFamily="Segoe UI Symbol" FontSize="16" Click="PlayPauseClick" Width="28" Height="28" Name="PlayPauseButton" Margin="0 0 10 0"/>
+            <Button Content="&#xE101;" FontFamily="Segoe UI Symbol" FontSize="16" Click="NextTrackClick" Width="28" Height="28" Name="NextButton" Margin="0 0 30 0"/>
 
-            <Button Content="&#x1f509;" FontFamily="Segoe UI Symbol" FontSize="20" Click="VolumeDownClick" Width="35" Height="35" Name="VolumeDownButton" Margin="0 0 10 0"/>
-            <Button Content="&#x1f50a;" FontFamily="Segoe UI Symbol" FontSize="20" Click="VolumeUpClick" Width="35" Height="35" Name="VolumeUpButton" Margin="0 0 10 0"/>
-            <Button Content="&#x1f507;" FontFamily="Segoe UI Symbol" FontSize="20" Click="MuteClick" Width="35" Height="35" Name="MuteButton" Margin="0 0 10 0"/>
+            <Button Content="&#x1f509;" FontFamily="Segoe UI Symbol" FontSize="16" Click="VolumeDownClick" Width="28" Height="28" Name="VolumeDownButton" Margin="0 0 10 0"/>
+            <Button Content="&#x1f50a;" FontFamily="Segoe UI Symbol" FontSize="16" Click="VolumeUpClick" Width="28" Height="28" Name="VolumeUpButton" Margin="0 0 10 0"/>
+            <Button Content="&#x1f507;" FontFamily="Segoe UI Symbol" FontSize="16" Click="MuteClick" Width="28" Height="28" Name="MuteButton" Margin="0 0 10 0"/>
         </StackPanel>
     </Grid>
 </UserControl>

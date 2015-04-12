@@ -88,10 +88,8 @@ namespace jla.SpotifyVSExtension.SpotifyAPI
             }
             catch (Exception e)
             {
-                MessageBox.Show("Error getting album cover: " + e.Message, "Spotify Player");
                 return String.Empty;
             }
-            return String.Empty;
         }
 
         private string SendRequest(string request)
@@ -134,22 +132,22 @@ namespace jla.SpotifyVSExtension.SpotifyAPI
                 response = _webClient.DownloadString(a);
                 response = "[ " + response + " ]";
             }
-            catch (Exception z)
+            catch (Exception e)
             {
                 if (Process.GetProcessesByName("SpotifyWebHelper").Length < 1)
                 {
                     try
                     {
-                        Process.Start(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Spotify\\Data\\SpotifyWebHelper.exe");
+                        Process.Start(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Spotify\\SpotifyWebHelper.exe");
                     }
-                    catch (Exception dd)
+                    catch (Exception ex)
                     {
-                        throw new Exception("Could not launch SpotifyWebHelper. Your installation of Spotify might be corrupt or you might not have Spotify installed", dd);
+                        throw new Exception("Could not launch SpotifyWebHelper", ex);
                     }
 
                     return SendRequest(request, oauth, cfid);
                 }
-                throw new Exception("Unable to connect to SpotifyWebHelper", z);
+                throw new Exception("Unable to connect to SpotifyWebHelper", e);
             }
             return response;
         }

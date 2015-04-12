@@ -27,7 +27,7 @@ namespace jla.SpotifyVSExtension
             }
             else
             {
-                Console.WriteLine("Spotify api error: " + cfid.error.message);
+                TrackName.Text = "Unable connect to Spotify";
             }
         }
 
@@ -44,10 +44,33 @@ namespace jla.SpotifyVSExtension
             RefreshCurrentStatus();
         }
 
+        private void Error()
+        {
+            _timer.Stop();
+            Dispatcher.Invoke(() =>
+            {
+                TrackName.Text = "Unable connect to Spotify";
+                ArtistName.Text = String.Empty;
+                AlbumCover.Source = new BitmapImage(new Uri("http://127.0.0.1", UriKind.Absolute));
+            });
+        }
+
         private void RefreshCurrentStatus()
         {
             var previousStatus = _currentStatus;
-            _currentStatus = _spotifyApi.GetCurrentStatus();
+            try
+            {
+                _currentStatus = _spotifyApi.GetCurrentStatus();
+            }
+            catch (Exception e)
+            {
+                Error();
+            }
+            if (_currentStatus.error != null)
+            {
+                Error();
+            }
+
             if (previousStatus != null && previousStatus.Equals(_currentStatus))
                 return;
             if (_currentStatus != null && _currentStatus.error == null)
@@ -56,10 +79,17 @@ namespace jla.SpotifyVSExtension
                 {
                     var albumCover = _spotifyApi.GetAlbumCover(_currentStatus.track.album_resource.uri);
                     var albumCoverUri = String.IsNullOrEmpty(albumCover) ? new Uri("http://127.0.0.1", UriKind.Absolute) : new Uri(albumCover, UriKind.Absolute);
-                        
+
                     Dispatcher.Invoke(() =>
                     {
-                        SetPauseIcon();
+                        if (_currentStatus.playing)
+                        {
+                            SetPauseIcon();
+                        }
+                        else
+                        {
+                            SetPlayIcon();
+                        }
                         TrackName.Text = _currentStatus.track.track_resource.name;
                         ArtistName.Text = _currentStatus.track.artist_resource.name;
                         AlbumCover.Source = new BitmapImage(albumCoverUri);
