@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
-using System.Windows;
+using System.Text;
 using jla.SpotifyVSExtension.SpotifyAPI.Model;
 using Newtonsoft.Json;
 
@@ -27,7 +27,7 @@ namespace jla.SpotifyVSExtension.SpotifyAPI
         {
             _oauth = GetOAuth();
 
-            _webClient = new WebClient();
+            _webClient = new WebClient {Encoding = Encoding.UTF8};
             _webClient.Headers.Add("Origin", "https://embed.spotify.com");
             _webClient.Headers.Add("Referer", "https://embed.spotify.com/?uri=spotify:track:5Zp4SWOpbuOdnsxLqwgutt");
         }
